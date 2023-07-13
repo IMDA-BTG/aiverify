@@ -1,0 +1,49 @@
+name: Publish Docs
+
+on:
+  push:
+    branches: [ docs ]
+
+  # Run this workflow manually from Actions tab
+  workflow_dispatch:
+
+# Allow one concurrent deployment
+concurrency:
+  group: ${{ github.repository }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+
+  publish-docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+
+      - name: Checkout docs
+        uses: actions/checkout@v3
+        with:
+          ssh-key: ${{secrets.DEPLOY_DOCS_DEV_KEY}}
+          ref: docs
+
+      # Install dependencies (mkdocs)
+      - name: Install dependencies
+        run: |
+          python -m venv env
+          source env/bin/activate
+          pip install -r requirements.txt
+          
+      # Install dependencies (mkdocs)
+      - name: Install dependencies
+        run: |
+          python -m venv env
+          source env/bin/activate
+          pip install -r requirements.txt
+
+      - name: Push to gh-pages
+        run: |
+          source env/bin/activate
+          git config user.name "imda-btg"
+          git config user.email "idma-btg@imda.gov.sg"
+
+          mkdocs gh-deploy --clean --force
