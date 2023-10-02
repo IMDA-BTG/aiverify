@@ -18,6 +18,7 @@ import Project, {
   Report,
   ProjectReportStatus,
   ModelAndDatasets,
+  InputBlockData,
 } from 'src/types/project.interface';
 import { TestInformation } from 'src/types/test.interface';
 
@@ -33,8 +34,8 @@ import { toErrorWithMessage } from 'src/lib/errorUtils';
 
 export interface ProjectStore extends ProjectTemplateStore {
   requireGroundTruth: boolean;
-  inputBlockData: GenericMap<any>;
-  dispatchInputBlockData: Dispatch<any>;
+  inputBlockData: InputBlockData;
+  dispatchInputBlockData: Dispatch<DataUpdateActions<InputBlockData>>;
   testInformationData: GenericMap<TestInformation>;
   isAlgorithmValid: (gid: string) => boolean;
   dispatchTestInformationData: Dispatch<MapActions<TestInformation>>;
@@ -140,7 +141,7 @@ export function useProjectStore(
           algorithmGID: info.algorithmGID,
           testArguments: info.testArguments,
         };
-      }) as any[];
+      });
       return updateProjectFn(id, { testInformationData: testInformationArray })
         .then(() => {
           templateStore.setLastSavedTime(moment());

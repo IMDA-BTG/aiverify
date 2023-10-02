@@ -10,15 +10,19 @@ export enum ProjectReportStatus {
   ReportGenerated = 'ReportGenerated',
 }
 
+export interface InputBlockData {
+  [testID: string]: Record<string, string | number>;
+}
+
 export interface Report {
   projectID: string; // id of project
-  projectSnapshot: Project; // snapshot of project
-  status: ProjectReportStatus; // report status
+  projectSnapshot: Project;
+  status: ProjectReportStatus;
   timeStart: Date;
   timeTaken: number;
   totalTestTimeTaken: number;
-  inputBlockData?: any; // snapshot of input block data
-  tests?: TestEngineTask[]; // tests that are run for this report
+  inputBlockData?: InputBlockData;
+  tests?: TestEngineTask[];
 }
 
 export interface ModelAndDatasets {
@@ -41,17 +45,15 @@ export type ModelAndDatesetsFileNames = {
  */
 export default interface Project extends ProjectTemplate {
   template: ProjectTemplate;
-  inputBlockData?: any;
+  inputBlockData?: InputBlockData;
   testInformationData?: TestInformation[];
   modelAndDatasets?: ModelAndDatasets;
   report?: Report;
 }
 
 export interface ProjectInput extends ProjectTemplate {
-  // template: ProjectTemplate;
-  inputBlockData?: any;
+  inputBlockData?: InputBlockData;
   testInformationData?: TestInformation[];
-  // modelAndDatasets?: ModelAndDatasets;
   modelAndDatasets?: {
     modelId?: string;
     testDatasetId?: string;

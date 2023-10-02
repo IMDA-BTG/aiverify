@@ -28,27 +28,6 @@ export type Page = {
   reportWidgets: ReportWidgetItem[];
 };
 
-/*
-export interface InputWidgetPropertyData {
-	gid: string, // widget gid,
-	// userProperties: PropertyData[], // user defined properties
-}
-
-export interface InputWidgetPropertyMap {
-	[gid: string]: InputWidgetPropertyData;
-}
-
-export interface ReportWidgetPropertyData {
-	gid: string, // widget gid,
-	widgetBoxProperty: PropertyData[], // defined the widget box properties, should be readonly to widget 
-	userProperties: PropertyData[], // user defined properties
-}
-
-export interface ReportWidgetPropertyMap {
-	[gid: string]: ReportWidgetPropertyData;
-}
-*/
-
 export type GlobalVariable = {
   key: string; // key
   value: string; // value
@@ -68,16 +47,10 @@ export default interface ProjectTemplate {
   id?: string; // project ID, null if new project
   fromPlugin: boolean;
   projectInfo: ProjectInformation;
-  // description?: string,
   createdAt?: Date;
   updatedAt?: Date;
   pages: Page[];
-  inputBlocks?: InputBlock[]; // compute dependencies based on selected report widgets
-  inputBlockGIDs?: string[]; // compute dependencies based on selected report widgets
-  // testInfo?: TestInformation,
-  // inputBlocks: string[], // gids of inputblocks
-  // inputWidgetProperties?: InputWidgetPropertyMap,
-  // reportWidgets: ReportWidget[],
-  // reportWidgetProperties: ReportWidgetPropertyMap[], // widget properties
+  inputBlocks?: InputBlock[];
+  inputBlockGIDs?: string[];
   globalVars: GlobalVariable[];
 }

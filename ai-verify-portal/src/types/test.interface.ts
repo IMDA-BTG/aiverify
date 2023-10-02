@@ -1,14 +1,13 @@
 import { Algorithm } from './plugin.interface';
-import Dataset, { DatasetColumn } from './dataset.interface';
-import Model from './model.interface';
+
+export type TestArguments = Record<
+  string,
+  string | number | string[] | number[]
+>;
 
 export interface TestInformation {
   algorithmGID: string;
   algorithm?: Algorithm;
-  modelDataset?: Model;
-  testDataset?: Dataset;
-  groundTruthDataset?: Dataset;
-  groundTruth?: DatasetColumn; // ground truth column
   isTestArgumentsValid: boolean; // whether testArguments is valid
   testArguments: object; // arguments filled in by users
 }
@@ -36,11 +35,10 @@ export interface ErrorMessage {
 export interface TestEngineTask {
   algorithmGID: string; // GID of algorithm
   algorithm: Algorithm;
-  testArguments: any; // snapshot of test arguments
+  testArguments: TestArguments; // snapshot of test arguments
   status: TestEngineTaskStatus;
   progress?: number; // progress in percentage
   timeStart?: Date;
   timeTaken?: number; // in seconds
-  output?: any;
   errorMessages?: ErrorMessage[];
 }

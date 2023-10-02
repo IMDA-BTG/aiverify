@@ -34,6 +34,7 @@ import {
   useSaveProjectAsTemplate,
 } from 'src/lib/projectService';
 import { toErrorWithMessage } from 'src/lib/errorUtils';
+import { MDXBundle } from './api/widget';
 
 export enum UpdateActionTypes {
   UPDATE = 'UPDATE',
@@ -123,10 +124,10 @@ export interface ProjectTemplateStore {
   addReportWidget: (reportWidget: ReportWidgetItem) => void;
   removeReportWidget: (reportWidget: ReportWidgetItem) => void;
   deletePage: (pageIdx: number) => void;
-  widgetBundleCache: GenericMap<any>;
-  dispatchWidgetBundleCache: Dispatch<MapActions<any>>;
-  reportWidgetComponents: GenericMap<any>;
-  dispatchReportWidgetComponents: Dispatch<MapActions<any>>;
+  widgetBundleCache: Record<string, MDXBundle>;
+  dispatchWidgetBundleCache: Dispatch<MapActions<MDXBundle>>;
+  reportWidgetComponents: Record<string, React.ReactNode>;
+  dispatchReportWidgetComponents: Dispatch<MapActions<React.ReactNode>>;
   createProjectTemplate: () => Promise<string>;
   saveProjectAsTemplate: (templateInfo: ProjectInformation) => Promise<string>;
   exportTemplate: (pluginGID: string, templateCID: string) => Promise<string>;
@@ -615,7 +616,7 @@ export function useProjectTemplateStore(
 
   // store the report widget components built from MDX
   const [reportWidgetComponents, dispatchReportWidgetComponents] = useReducer(
-    mapReducer<any>,
+    mapReducer<React.ReactNode>,
     {}
   );
 

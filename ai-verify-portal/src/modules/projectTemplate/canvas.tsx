@@ -322,18 +322,21 @@ export default function CanvasComponent(props: CanvasProps) {
         document.body.style.cursor = 'wait';
         try {
           const mdxBundle = await getMdxWidgetBundle(widget.gid);
-          projectStore.dispatchWidgetBundleCache({
-            type: MapActionTypes.SET,
-            key: widget.gid,
-            payload: mdxBundle,
-          });
-          if ('code' in mdxBundle)
+          if ('code' in mdxBundle) {
+            projectStore.dispatchWidgetBundleCache({
+              type: MapActionTypes.SET,
+              key: widget.gid,
+              payload: mdxBundle,
+            });
             wrapAndDispatchWidgetComponent(
               reportWidget as ReportWidgetItem,
               mdxBundle,
               layout
             );
-          document.body.style.cursor = 'default';
+            document.body.style.cursor = 'default';
+          } else {
+            throw mdxBundle;
+          }
         } catch (err) {
           const error = toErrorWithMessage(err);
           console.error(error);
@@ -644,18 +647,21 @@ export default function CanvasComponent(props: CanvasProps) {
       document.body.style.cursor = 'wait';
       try {
         const mdxBundle = await getMdxWidgetBundle(widget.gid);
-        projectStore.dispatchWidgetBundleCache({
-          type: MapActionTypes.SET,
-          key: widget.gid,
-          payload: mdxBundle,
-        });
-        if ('code' in mdxBundle)
+        if ('code' in mdxBundle) {
           addedWidgetGridItem = await addItem(widget, mdxBundle, newLayout);
-        if (addedWidgetGridItem) {
-          setSelectedWidget(addedWidgetGridItem);
-          triggerGridItemElementClick(addedWidgetGridItem.key);
+          projectStore.dispatchWidgetBundleCache({
+            type: MapActionTypes.SET,
+            key: widget.gid,
+            payload: mdxBundle,
+          });
+          if (addedWidgetGridItem) {
+            setSelectedWidget(addedWidgetGridItem);
+            triggerGridItemElementClick(addedWidgetGridItem.key);
+          }
+          document.body.style.cursor = 'default';
+        } else {
+          throw mdxBundle;
         }
-        document.body.style.cursor = 'default';
       } catch (err) {
         const error = toErrorWithMessage(err);
         console.error(error);
