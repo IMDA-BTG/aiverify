@@ -114,7 +114,12 @@ export enum MockDataType {
 export interface MockData {
   readonly type: MockDataType;
   readonly gid: string;
-  readonly data: object;
+  readonly data:
+    | string
+    | number
+    | string[]
+    | number[]
+    | Record<string, unknown>;
 }
 
 export interface ReportWidget extends BaseMDXComponent {

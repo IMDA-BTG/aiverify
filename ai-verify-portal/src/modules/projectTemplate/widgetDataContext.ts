@@ -2,7 +2,7 @@ import { createContext } from 'react';
 
 export type WidgetDataContextType = {
   [key: string]: {
-    properties: any;
+    properties: Record<string, string | number>;
   };
 };
 

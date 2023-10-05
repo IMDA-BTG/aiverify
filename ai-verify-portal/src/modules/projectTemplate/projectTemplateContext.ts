@@ -610,7 +610,7 @@ export function useProjectTemplateStore(
 
   // store the widget MDX bundle
   const [widgetBundleCache, dispatchWidgetBundleCache] = useReducer(
-    mapReducer<any>,
+    mapReducer<MDXBundle>,
     {}
   );
 

@@ -6,15 +6,17 @@ import { MDXBundle } from './api/widget';
 import moment from 'moment';
 import styles from './styles/shared/reportWidget.module.css';
 import 'ai-verify-shared-library/styles.css';
+import { InputBlockData } from 'src/types/project.interface';
+import { ReportWidget } from 'src/types/plugin.interface';
 
 const components = getComponents();
 
 export type ReportWidgetComponentProps = {
   mykey: string;
   mdxBundle: MDXBundle;
-  inputBlockData?: any;
-  result?: any;
-  meta?: any;
+  inputBlockData: InputBlockData;
+  result: Record<string, unknown>;
+  meta: ReportWidget;
 };
 
 export default function ReportWidgetComponent(

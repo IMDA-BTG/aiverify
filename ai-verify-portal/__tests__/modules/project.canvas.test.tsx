@@ -30,7 +30,7 @@ function ProjectCreatePageWrapper() {
 
 describe('Project Flow', () => {
   beforeAll(() => {
-    silentConsoleLogs();
+    // silentConsoleLogs();
     mockDomMatrix();
     jest.useFakeTimers({ advanceTimers: true });
   });

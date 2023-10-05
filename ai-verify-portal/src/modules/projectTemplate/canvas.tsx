@@ -295,9 +295,7 @@ export default function CanvasComponent(props: CanvasProps) {
       index: currentPageNo.current,
       payload: { reportWidgets },
     });
-    if (widgetItem.widget && widgetItem.widget.dependencies) {
-      projectStore.addReportWidget(widgetItem);
-    }
+
     return widgetItem;
   }
 
