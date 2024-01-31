@@ -78,7 +78,7 @@ const modelAPISchema = new Schema({
   authType: {
     type: String,
     required: true,
-    enum: ["No Auth", "Bearer Token", "Basic Auth"],
+    enum: ["No Auth", "Bearer Token", "Basic Auth", "API Key"],
     default: "No Auth",
   },
   authTypeConfig: { type: Object },
@@ -235,6 +235,18 @@ async function _exportModelAPI(modelAPI) {
           myAuth: {
             type: "http",
             scheme: "basic",
+          },
+        },
+      };
+      pathObj["security"] = [{ myAuth: [] }];
+      break;
+    case "API Key":
+      spec["components"] = {
+        securitySchemes: {
+          myAuth: {
+            type: "apiKey",
+            in: "header",
+            name: "X-API-KEY",
           },
         },
       };

@@ -268,6 +268,7 @@ casual.define("modelAPI", function (encoding, isArray) {
     "No Auth",
     "Bearer Token",
     "Basic Auth",
+    "API Key",
   ]);
   modelAPI.authType = authType;
   switch (authType) {
@@ -280,6 +281,11 @@ casual.define("modelAPI", function (encoding, isArray) {
       modelAPI.authTypeConfig = {
         username: casual.word,
         password: casual.password,
+      };
+      break;
+    case "API Key":
+      modelAPI.authTypeConfig = {
+        apiKey: casual.uuid,
       };
       break;
   }

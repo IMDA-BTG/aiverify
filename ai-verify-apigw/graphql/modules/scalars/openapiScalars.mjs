@@ -39,6 +39,7 @@ function _authType(value) {
       case "No Auth":
       case "Bearer Token":
       case "Basic Auth":
+      case "API Key":
         return value;
     }
   }
