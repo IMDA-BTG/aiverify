@@ -136,6 +136,7 @@ class Plugin(IAlgorithm):
 
         self._base_path = kwargs.get("project_base_path", Path().absolute())
         self._sensitive_feature = kwargs.get("sensitive_feature", None)
+        self._threshold_config = kwargs.get("threshold_config", None)
 
         # Other variables
         self._data = None
@@ -481,11 +482,70 @@ class Plugin(IAlgorithm):
 
         # list of tuple of labels to be passed into predict()
         dict_items_labels = self._data_instance.read_labels().items()
-        predicted_data = self._model.predict(
-            [self._data], dict_items_labels
-        )
+        predicted_data = self._model.predict([self._data], dict_items_labels)
+
+        # if the user has selected a threshold label, map the predicted data to label values
+        threshold_label = self._threshold_config.get("threshold_label", None)
+        if threshold_label is not None and threshold_label != "None":
+            predicted_data = self._map_predicted_data(predicted_data)
         return [eval(str(i)) for i in predicted_data]
-    
+
+    def _map_predicted_data(self, predicted_data: np.ndarray) -> np.ndarray:
+        """
+        A helper method to map the predicted data to a label value based on the threshold
+
+        Args:
+            predicted_data (np.ndarray): The predicted data in a numpy array returned from the model
+
+        Returns:
+            np.ndarray: The mapped predicted data in a numpy array
+        """
+        # currently only supports binary classification
+        lower_label = self._threshold_config.get("lower_label", None)
+        higher_label = self._threshold_config.get("higher_label", None)
+        threshold_value = self._threshold_config.get("threshold_value", None)
+        threshold_label = self._threshold_config.get("threshold_label", None)
+
+        # ensure that every field is filled in
+        if None not in (lower_label, higher_label, threshold_value):
+            smaller_label = lower_label
+            bigger_label = higher_label
+
+            # do a swap of the label values if label one is bigger than label two
+            if lower_label > higher_label:
+                smaller_label = higher_label
+                bigger_label = lower_label
+
+            # check if threshold value belongs to label one or label two
+            bool_threshold_in_lower_label = True
+            if threshold_label.lower() == "higher_label":
+                bool_threshold_in_lower_label = False
+
+            # threshold value belongs to lower range
+            # e.g. x <= 0.4(threshold value) will be classified as the lower label
+            if bool_threshold_in_lower_label:
+                for index in range(len(predicted_data)):
+                    single_predicted_result = predicted_data[index]
+                    if single_predicted_result <= threshold_value:
+                        predicted_data[index] = smaller_label
+                    else:
+                        predicted_data[index] = bigger_label
+
+            # threshold value belongs to upper range
+            # e.g. x >= 0.4(threshold value) will be classified as the upper label
+            else:
+                for index in range(len(predicted_data)):
+                    single_predicted_result = predicted_data[index]
+                    if single_predicted_result >= threshold_value:
+                        predicted_data[index] = bigger_label
+                    else:
+                        predicted_data[index] = smaller_label
+            return predicted_data
+        else:
+            raise RuntimeError(
+                "Missing field(s) for threshold config. Please check your fields and try again."
+            )
+
     def _compute_between_group(
         self,
         data_ground_truth_np: np.ndarray,

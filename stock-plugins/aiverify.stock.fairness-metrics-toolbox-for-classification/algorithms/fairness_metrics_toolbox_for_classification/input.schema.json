@@ -3,7 +3,7 @@
     "description": "A schema for algorithm plugin input arguments",
     "type": "object",
     "required": [
-        "sensitive_feature", "annotated_labels_path","file_name_label"
+        "sensitive_feature", "annotated_labels_path", "file_name_label"
     ],
     "properties": {
         "sensitive_feature": {
@@ -25,6 +25,44 @@
             "title": "Name of column containing image file names",
             "description": "Key in the name of the column containing the file names in the annotated ground truth dataset",
             "type": "string"
+        },        
+        "threshold_config": {
+            "title": "Threshold Values",
+            "description": "Threshold values of the predicted results",
+            "type": "object",
+            "optional": true,
+            "properties": {
+                "threshold_label": {
+                    "title":"Threshold Label",
+                    "type": "string",
+                    "optional": true,
+                    "enum": ["lower_label", "higher_label", "None"],
+                    "enumNames": ["Lower Label Value", "Higher Label Value", "Not Applicable"],
+                    "default": "None",
+                    "description":"The label that the Threshold Value should be classified under."
+                },                      
+                "lower_label": {
+                    "title": "Lower Label Value",
+                    "type": "integer",
+                    "optional": true,
+                    "description": "The LOWER label/ground truth value of the data. E.g. 0",
+                    "default": 0
+                },
+                "higher_label": {
+                    "title": "Higher Label Value",
+                    "type": "integer",
+                    "optional": true,
+                    "description": "The HIGHER label/ground truth value of the data. E.g. 1",
+                    "default": 1
+                },
+                "threshold_value": {
+                    "title": "Threshold Value",
+                    "type": "number",
+                    "optional": true,
+                    "description": "The label value which the threshold value should be classified under.",
+                    "default": 1
+                }                                  
+            }
         }
     }
 }
