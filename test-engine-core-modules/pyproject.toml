@@ -21,6 +21,8 @@ scipy = "1.11.1"
 httpx = "0.24.1"
 openapi-schema-validator = "0.6.0"
 aiopenapi3 = {git = "https://github.com/commonism/aiopenapi3.git", rev = "8e9591162d1cef8cfc8e7840f34eb20c84af8c24"}
+rpy2 = "^3.5.13"
+test-engine-core = {path = "../test-engine-core/dist/test_engine_core-0.10.0.tar.gz"}
 
 
 [tool.poetry.group.dev.dependencies]
