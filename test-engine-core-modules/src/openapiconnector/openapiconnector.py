@@ -742,7 +742,6 @@ class Plugin(IModel):
 
         end_time = time.time()
         elapsed_time = end_time - start_time
-        print("time taken: ", elapsed_time)
         return response_data
 
     def _validate_data_type(self, data: Any, data_type: str) -> None:
