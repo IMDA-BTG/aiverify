@@ -10,4 +10,5 @@ class ModelPluginType(Enum):
     TENSORFLOW = 2
     XGBOOST = 3
     LIGHTGBM = 4
-    API = 5
+    R = 5
+    API = 6

@@ -4,3 +4,7 @@ coverage
 /package-lock.json
 **/*.log
 .tox
+
+.DS_Store
+.idea
+.vscode

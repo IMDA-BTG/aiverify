@@ -46,6 +46,7 @@ class PluginManager:
         ModelPluginType.XGBOOST,
         ModelPluginType.SKLEARN,
         ModelPluginType.TENSORFLOW,
+        ModelPluginType.R,
         ModelPluginType.API,
     ]
     _serializer_priority_list: List = [
@@ -54,6 +55,7 @@ class PluginManager:
         SerializerPluginType.TENSORFLOW,
         SerializerPluginType.IMAGE,
         SerializerPluginType.DELIMITER,
+        SerializerPluginType.RDS,
     ]
     _pipeline_priority_list: List = [PipelinePluginType.SKLEARN]
     _plugins: Dict = {plugin_type.name: dict() for plugin_type in PluginType}

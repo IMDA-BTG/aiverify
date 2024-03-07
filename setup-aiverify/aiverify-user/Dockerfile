@@ -67,6 +67,9 @@ RUN apt-get install -y git
 # Install Unzip
 RUN apt-get install unzip
 
+# Install R
+RUN apt-get install -y r-base r-base-dev
+
 ################### Create aiverify user ######################
 
 ARG USER=aiverify
