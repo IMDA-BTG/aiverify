@@ -534,10 +534,12 @@ class Plugin(IModel):
             headers, data, result = await self._api_instance._.predict_api.request(
                 parameters=row_data_to_send, data=body
             )
-        if result is None:
+        response_body = json.loads(result.text)
+        response_body_value = response_body.get("probability_for_ttp_90", None)
+        if result is None or response_body is None or response_body_value is None:
             print("no results in send_batched_request")        
-            returned_response = json.loads(result.text)
-            print("returned_response:", returned_response, "sent_data:", list_of_processed_rows)
+            print("returned_response:", result, "sent_data:", list_of_processed_rows)
+            print("response_body:", response_body)
         return result
 
     async def make_request(self, data: Any, *args) -> Any:
