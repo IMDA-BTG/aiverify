@@ -534,8 +534,10 @@ class Plugin(IModel):
             headers, data, result = await self._api_instance._.predict_api.request(
                 parameters=row_data_to_send, data=body
             )
-        # if not result:
-            # print("no results in send_batched_request")            
+        if not result:
+            print("no results in send_batched_request")        
+            returned_response = json.loads(result.text)
+            print("returned_response:", returned_response, "sent_data:", list_of_processed_rows)
         return result
 
     async def make_request(self, data: Any, *args) -> Any:
@@ -728,19 +730,13 @@ class Plugin(IModel):
                 )
                 for response in response_list:
                     response_body = json.loads(response.text)
-                    print("response.text:", json.loads(response.text))
                     response_body_value = response_body.get(response_keyname)
                     if response_body_value is None:
                         print("response_body_value is none")
-                        continue
-                    print("response_body_value is not none:", response_body_value)
                     for data in response_body_value:
-                        
                         response_data.append(
                             self._validate_data_type(data, response_array_type)
                         )
-
-            # if dictionary data consists of primitive data type: {data: 100}
             else:
                 for response in response_list:
                     response_body = json.loads(response.text)
