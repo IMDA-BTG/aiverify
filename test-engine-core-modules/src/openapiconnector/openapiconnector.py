@@ -19,7 +19,7 @@ from test_engine_core.interfaces.imodel import IModel
 from test_engine_core.plugins.enums.model_plugin_type import ModelPluginType
 from test_engine_core.plugins.enums.plugin_type import PluginType
 from test_engine_core.plugins.metadata.plugin_metadata import PluginMetadata
-
+import traceback
 
 class BatchStrategy(Enum):
     """
@@ -283,7 +283,8 @@ class Plugin(IModel):
         # Call the function to make multiple requests
         try:
             return asyncio.run(self.make_request(data, *args))
-        except:
+        except :
+            traceback.print_exc() 
             raise RuntimeError("Unable to send request to API Server. Please ensure that the URL is correct.")
 
 
