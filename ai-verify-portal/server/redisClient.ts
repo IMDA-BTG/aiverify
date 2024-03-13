@@ -10,6 +10,10 @@ if (!REDIS_URI) {
 const redisConnect = () => {
   const redis = createClient({
     url: REDIS_URI,
+
+    socket: {
+      reconnectStrategy: retries => Math.min(retries * 50, 1000)
+    },    
   });
   redis.on('error', (err) => {
     console.error('redis connection error:', err);

@@ -13,7 +13,14 @@ if (!REDIS_URI) {
 const redisConnect = () => {
   const redis = createClient({
     url: REDIS_URI,
-    socket: {
+    retry_strategy: retries => Math.min(retries * 50, 1000),
+    socket_keepalive: 'true',
+    socket_initial_delay: 10000,
+  
+
+
+    //socket: {
+      //reconnectStrategy: retries => Math.min(retries * 50, 1000)
       // Abort connecting to redis after 3 retries.
       // PY: remove below and use default reconnect strategy
       // reconnectStrategy: (retries) => {
@@ -25,26 +32,29 @@ const redisConnect = () => {
       //     return retries;
       //   }
       // },
-    },
+    //},
   });
   redis.on('error', (err) => {
     console.error('redis connection error:', err);
     // redis.disconnect();
   });
   redis.on('end', (err) => {
-    // console.error('redis connection ended:', err);
+    console.error('redis connection ended:', err);
   });
-  redis.on('ready', () => {
-    // console.info('Message queue is ready')
-  })
+  // redis.on('ready', () => {
+
+  // })
   redis.on("reconnecting", function () {
-    // console.log("redis reconnecting");
+    console.log("redis reconnecting");
   });
-  redis.on('connect', () => {
-    // console.info('redis connected')
-  })
+  // redis.on("connect", function () {
+  //   // redis.stream.setKeepAlive(true, 10800000);
+  // });
+
+
   // if (NODE_ENV !== 'test')
   redis.connect();
+  
   return redis; 
 }
 // const redis = connect();
