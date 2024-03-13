@@ -13,14 +13,14 @@ if (!REDIS_URI) {
 const redisConnect = () => {
   const redis = createClient({
     url: REDIS_URI,
-    retry_strategy: retries => Math.min(retries * 50, 1000),
+    // retry_strategy: retries => Math.min(retries * 50, 1000),
     socket_keepalive: 'true',
     socket_initial_delay: 10000,
   
 
 
-    //socket: {
-      //reconnectStrategy: retries => Math.min(retries * 50, 1000)
+    socket: {
+      reconnectStrategy: retries => Math.min(retries * 50, 1000)
       // Abort connecting to redis after 3 retries.
       // PY: remove below and use default reconnect strategy
       // reconnectStrategy: (retries) => {
@@ -30,9 +30,9 @@ const redisConnect = () => {
       //   }
       //   else {
       //     return retries;
-      //   }
+        // }
       // },
-    //},
+    },
   });
   redis.on('error', (err) => {
     console.error('redis connection error:', err);
