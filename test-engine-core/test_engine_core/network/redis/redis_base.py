@@ -14,6 +14,7 @@ class RedisBase:
         self._host_name: str = ""
         self._host_port: int = 0
         self._host_timeout: int = 5
+        self._health_check_interval: int = 10
         self._redis_instance: Union[redis.Redis, None] = None
 
     def connect(self, host_name: str, host_port: int) -> Tuple[bool, str]:
@@ -43,7 +44,10 @@ class RedisBase:
                 self._host_name,
                 self._host_port,
                 decode_responses=True,
+                health_check_interval=self._health_check_interval,
                 socket_connect_timeout=self._host_timeout,
+                retry_on_timeout=True,
+                socket_keepalive=True
             )
             return True, ""
 
