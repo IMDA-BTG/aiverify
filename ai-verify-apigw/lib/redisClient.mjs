@@ -13,6 +13,7 @@ if (!REDIS_URI) {
 const redisConnect = () => {
   const redis = createClient({
     url: REDIS_URI,
+    pingInterval: 5000,
     // retry_strategy: retries => Math.min(retries * 50, 1000),
     socket_keepalive: 'true',
     socket_initial_delay: 10000,
