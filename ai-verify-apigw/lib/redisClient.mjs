@@ -13,7 +13,7 @@ if (!REDIS_URI) {
 const redisConnect = () => {
   const redis = createClient({
     url: REDIS_URI,
-    pingInterval: 5000,
+    // pingInterval: 5000,
     // retry_strategy: retries => Math.min(retries * 50, 1000),
     socket_keepalive: 'true',
     socket_initial_delay: 10000,
@@ -38,16 +38,16 @@ const redisConnect = () => {
     // redis.disconnect();
   });
   redis.on('end', (err) => {
-    console.error('redis connection ended:', err);
+    console.error('APIGW Redis connection ended:', err);
   });
   redis.on('ready', () => {
-    console.log('redis is ready');
+    console.log('APIGW Redis is ready');
   })
   redis.on("reconnecting", function () {
-    console.log("redis reconnecting");
+    console.log("APIGW Redis reconnecting");
   });
   redis.on("connect", function () {
-    console.log('redis is connected');
+    console.log('APIGW Redis is connected');
   });
 
   redis.connect();

@@ -10,23 +10,28 @@ if (!REDIS_URI) {
 const redisConnect = () => {
   const redis = createClient({
     url: REDIS_URI,
-    pingInterval: 5000,
+
     socket: {
       reconnectStrategy: retries => Math.min(retries * 50, 1000)
     },    
   });
+  redis.on('error', (err) => {
+    console.error('Portal Redis connection error:', err);
+  });
   redis.on('end', (err) => {
-    console.error('redis connection ended:', err);
+    console.error('Portal Redis connection ended:', err);
   });
   redis.on('ready', () => {
-    console.log('redis is ready');
-  })
+    console.info('Portal Message queue is ready')
+  });
   redis.on("reconnecting", function () {
-    console.log("redis reconnecting");
+    console.log("Portal Redis reconnecting");
   });
   redis.on("connect", function () {
-    console.log('redis is connected');
-  });
+    console.log('Portal Redis is connected');
+  });  
+  // if (NODE_ENV !== 'test')
+  redis.connect();
   return redis;
 };
 // const redis = connect();
