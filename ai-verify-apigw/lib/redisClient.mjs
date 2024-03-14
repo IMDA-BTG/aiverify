@@ -17,8 +17,6 @@ const redisConnect = () => {
     socket_keepalive: 'true',
     socket_initial_delay: 10000,
   
-
-
     socket: {
       reconnectStrategy: retries => Math.min(retries * 50, 1000)
       // Abort connecting to redis after 3 retries.
@@ -41,18 +39,16 @@ const redisConnect = () => {
   redis.on('end', (err) => {
     console.error('redis connection ended:', err);
   });
-  // redis.on('ready', () => {
-
-  // })
+  redis.on('ready', () => {
+    console.log('redis is ready');
+  })
   redis.on("reconnecting", function () {
     console.log("redis reconnecting");
   });
-  // redis.on("connect", function () {
-  //   // redis.stream.setKeepAlive(true, 10800000);
-  // });
+  redis.on("connect", function () {
+    console.log('redis is connected');
+  });
 
-
-  // if (NODE_ENV !== 'test')
   redis.connect();
   
   return redis; 
